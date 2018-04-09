@@ -1,0 +1,7 @@
+# Google Vision API - 
+
+https://cloud.google.com/vision/docs/
+
+# AWS S3 API
+
+https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html
