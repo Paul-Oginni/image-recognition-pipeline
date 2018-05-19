@@ -1,0 +1,6 @@
+## Virtualenv
+
+mkvirtualenv [name]
+
+## Django
+manage.py
