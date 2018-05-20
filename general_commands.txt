@@ -1,6 +1,14 @@
 ## Virtualenv
 
-mkvirtualenv [name]
+pip install virtualenv - installs virtual envoronment
+mkvirtualenv [name] - makes new virtual environment
+workon [name] - work on the project you want
 
 ## Django
-manage.py
+django-admin startproject [name] ## creates project folder with all its boilerplate
+python manage.py migrate ## applies data migratons
+python manage.py runserver ## runs server
+python manage.py createsuperuser --username=[name] --email=[name] ## creates superuser
+python manage.py startapp [name] ## creates application
+python manage.py makemigrations [model name] ## creates a migration folder in the root default application
+python manage.py migrate ## creates db tables based on content in app/migrations files
