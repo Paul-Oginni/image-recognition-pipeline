@@ -1,7 +1,0 @@
-## Lists
-  - get the number of items in a list:
-    - len([1,2,3])
-
-## General
-  - get item's type
-    - type(item)

@@ -1,0 +1,29 @@
+## Virtualenv
+
+pip install virtualenv ## installs virtual environment
+mkvirtualenv [name] ## makes new virtual environment
+workon [name] ## work on the project you want
+lsvirtualenv -b ## list virtual environments (brief)
+lsvirtualenv -v ## list virtual environments (verbose)
+
+## Django
+django-admin startproject [name] ## creates project folder with all its boilerplate
+python manage.py migrate ## applies data migratons
+python manage.py runserver ## runs server
+python manage.py createsuperuser --username=[name] --email=[name] ## creates superuser
+python manage.py startapp [name] ## creates application
+python manage.py makemigrations [model name] ## creates a migration folder in the root default application
+python manage.py migrate ## creates db tables based on content in app/migrations files
+
+## Tmux
+ctrl+b ## command prefix
+tmux new -s myname ## start new session with a name
+tmux ls ## check active sessions
+ctrl+b d ## tmux detach from a session
+tmux attach-session -t 3 ## attach to numbered sessions
+tmux a #    ## attach to last created session
+ctrl+b " ## split a pane horizontally
+ctrl+b % ## split a pane vertically
+ctrl+b [arrow key] ## move between panes
+ctrl+b x ## kill a pane
+Source: https://hackernoon.com/a-gentle-introduction-to-tmux-8d784c404340
