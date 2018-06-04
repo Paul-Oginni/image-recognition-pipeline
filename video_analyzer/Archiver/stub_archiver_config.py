@@ -1,0 +1,1 @@
+## This is where to store path variables. For security reasons, I'm omitting such files from the git repository.

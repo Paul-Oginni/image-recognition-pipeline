@@ -7,15 +7,18 @@ from pathlib import Path
 class Archiver():
 
     def __init__(self):
-        self.Path = Path(config.path_to_data)
-        self.processed_folder = config.processed_folder
+        self.Path = Path(config.configurations['path_to_data'])
+        self.processed_folder = config.configurations["processed_folder"]
+
+        # self.Path = Path(config.path_to_data)
+        # self.processed_folder = config.processed_folder
 
     def archive(self):
         # Put all the files into a list
         try:
             s3 = boto3.resource('s3')
-            posix_file_list = list(self.Path.glob('**/*.txt'))
-            # posix_file_list = list(self.Path.glob('**/*.MOV'))            
+            # posix_file_list = list(self.Path.glob('**/*.txt'))
+            posix_file_list = list(self.Path.glob('**/*.MOV'))            
 
             # Upload the files to S3
             for i in range(len(posix_file_list)):    
