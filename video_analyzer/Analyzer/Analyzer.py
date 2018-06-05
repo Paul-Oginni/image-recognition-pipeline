@@ -38,66 +38,39 @@ class Analyzer():
             "Name": self.Name
         }
 
-    def boto_client(self):
+    # def boto_client(self):
         # initialize client
         client = boto3.client('rekognition')
-
-        # set params
-        # headers = {
-
-        #     "Content-Type": "application/x-amz-json-1.1",
-        #     "X-Amz-Date": "2018-06-04T02:44:27-07:00",
-        #     "X-Amz-Target": "RekognitionService.ListCollections"
-        # } 
-        # r = requests.post("https://rekognition.us-west-2.amazonaws.com", data)
-        # print("\n")
-        # print(r.text)
-
-        # call service
         
         response = client.start_label_detection(
             Video={
                 'S3Object': {
                     'Bucket': 'image-recognition-analyzer-bucket',
-                    'Name': 'v1.MOV'##,
-                    # 'Version': '1'
+                    'Name': 'v2.MOV',
+                    'Version': 'TZGKcPcMELa_jXhb58p6P3YSpfPsPhYV'
                 }
             },
-            ClientRequestToken = 'job2crt',
+            ClientRequestToken = 'job9crt',
             MinConfidence = 1.0,
             NotificationChannel = {
-                'SNSTopicArn': 'arn:aws:sns:us-west-2:219780720175:VideoAnalyzerTopic',
+                'SNSTopicArn':   'arn:aws:sns:us-west-2:219780720175:VideoAnalyzerTopic',
                 'RoleArn': 'arn:aws:iam::219780720175:role/rekognition_role'
             },
-            JobTag='job2jt'
-        )        
-        # response = client.start_label_detection(
-        #     Video=self.Video,
-        #     ClientRequestToken=self.ClientRequestToken,
-        #     MinConfidence=self.MinConfidence,
-        #     NotificationChannel=self.NotificationChannel,
-        #     JobTag=self.JobTag
-        # )
+            JobTag='job9crt'
+        )
+        print(response)       
 
+    def get_job_results(self, jobId):
+        client = boto3.client('rekognition')        
+        response = client.get_label_detection(
+            JobId=jobId,
+            MaxResults=123
+            # NextToken='string',
+            # SortBy='NAME'|'TIMESTAMP'
+        )
+        print(response)
 
 
 analyzer = Analyzer()
 # analyzer.make_request()
-analyzer.boto_client()
-    
-# {
-#    "ClientRequestToken": "string",
-#    "JobTag": "string",
-#    "MinConfidence": number,
-#    "NotificationChannel": { 
-#       "RoleArn": "string",
-#       "SNSTopicArn": "string"
-#    },
-#    "Video": { 
-#       "S3Object": { 
-#          "Bucket": "string",
-#          "Name": "string",
-#          "Version": "string"
-#       }
-#    }
-# }
+analyzer.get_job_results("<jobid>")
