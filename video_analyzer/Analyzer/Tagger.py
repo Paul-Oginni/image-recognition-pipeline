@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 
 import requests
-import analyzer_config as config
+import tagger_config as config
 import boto3
 
-class Analyzer():
+class Tagger():
     
     def __init__(self):
-        self.ClientRequestToken = config.analyzer_config["ClientRequestToken"]
-        self.JobTag = config.analyzer_config["JobTag"]
-        self.MinConfidence = config.analyzer_config["MinConfidence"]
-        self.NotificationChannel = config.analyzer_config["NotificationChannel"]["RoleArn"]
-        self.SNSTopicArn = config.analyzer_config["NotificationChannel"]["SNSTopicArn"]
-        self.Bucket = config.analyzer_config["Video"]["S3Object"]["Bucket"]
-        self.Name = config.analyzer_config["Video"]["S3Object"]["Name"]
-        self.Video = config.analyzer_config["Video"]
+        self.ClientRequestToken = config.tagger_config["ClientRequestToken"]
+        self.JobTag = config.tagger_config["JobTag"]
+        self.MinConfidence = config.tagger_config["MinConfidence"]
+        self.NotificationChannel = config.tagger_config["NotificationChannel"]["RoleArn"]
+        self.SNSTopicArn = config.tagger_config["NotificationChannel"]["SNSTopicArn"]
+        self.Bucket = config.tagger_config["Video"]["S3Object"]["Bucket"]
+        self.Name = config.tagger_config["Video"]["S3Object"]["Name"]
+        self.Video = config.tagger_config["Video"]
         
 
 
@@ -40,23 +40,23 @@ class Analyzer():
 
     # def boto_client(self):
         # initialize client
-        client = boto3.client('rekognition')
+        client = boto3.client('rekognition', region_name='us-west-2')
         
         response = client.start_label_detection(
             Video={
                 'S3Object': {
                     'Bucket': 'image-recognition-analyzer-bucket',
-                    'Name': 'v2.MOV',
-                    'Version': 'TZGKcPcMELa_jXhb58p6P3YSpfPsPhYV'
+                    'Name': 'v1.MOV'
+                    #'Version': 'TZGKcPcMELa_jXhb58p6P3YSpfPsPhYV'
                 }
             },
-            ClientRequestToken = 'job9crt',
+            ClientRequestToken = 'job16crt',
             MinConfidence = 1.0,
             NotificationChannel = {
                 'SNSTopicArn':   'arn:aws:sns:us-west-2:219780720175:VideoAnalyzerTopic',
                 'RoleArn': 'arn:aws:iam::219780720175:role/rekognition_role'
             },
-            JobTag='job9crt'
+            JobTag='job16crt'
         )
         print(response)       
 
@@ -71,6 +71,6 @@ class Analyzer():
         print(response)
 
 
-analyzer = Analyzer()
-# analyzer.make_request()
-analyzer.get_job_results("<jobid>")
+tagger = Tagger()
+tagger.make_request()
+#tagger.get_job_results("job12crt")
