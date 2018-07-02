@@ -40,28 +40,29 @@ class Analyzer():
 
     # def boto_client(self):
         # initialize client
-        client = boto3.client('rekognition')
+        client = boto3.client('rekognition', region_name='us-west-2')
         
         response = client.start_label_detection(
             Video={
                 'S3Object': {
                     'Bucket': 'image-recognition-analyzer-bucket',
-                    'Name': 'v2.MOV',
-                    'Version': 'TZGKcPcMELa_jXhb58p6P3YSpfPsPhYV'
+                    'Name': 'v4.MOV'
+                    #'Version': 'TZGKcPcMELa_jXhb58p6P3YSpfPsPhYV'
                 }
             },
-            ClientRequestToken = 'job9crt',
+            ClientRequestToken = 'job120180630_2rt',
             MinConfidence = 1.0,
             NotificationChannel = {
                 'SNSTopicArn':   'arn:aws:sns:us-west-2:219780720175:VideoAnalyzerTopic',
-                'RoleArn': 'arn:aws:iam::219780720175:role/rekognition_role'
+                #'RoleArn': 'arn:aws:iam::219780720175:role/rekognition_role'
+                'RoleArn': 'arn:aws:iam::219780720175:role/video_analyzer'
             },
-            JobTag='job9crt'
+            JobTag='job120180630_3crt'
         )
         print(response)       
 
     def get_job_results(self, jobId):
-        client = boto3.client('rekognition')        
+        client = boto3.client('rekognition', region_name='us-west-2')        
         response = client.get_label_detection(
             JobId=jobId,
             MaxResults=123
@@ -72,5 +73,5 @@ class Analyzer():
 
 
 analyzer = Analyzer()
-# analyzer.make_request()
-analyzer.get_job_results("<jobid>")
+#analyzer.make_request()
+analyzer.get_job_results("f4fe90654c6d2d7c047f69e8397ef3f4657171433bf61b34597e78e4b94b3e64")
