@@ -71,5 +71,5 @@ class Analyzer():
 
 
 analyzer = Analyzer()
-analyzer.make_request()
-#analyzer.get_job_results("3ce7cc43a9542241309aad4732b141398f91d307cb44ba46ce52dca542fa80ca")
+#analyzer.make_request()
+analyzer.get_job_results("3ce7cc43a9542241309aad4732b141398f91d307cb44ba46ce52dca542fa80ca")
