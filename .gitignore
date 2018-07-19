@@ -1,3 +1,4 @@
 archiver_config*
 analyzer_config*
-
+.analyzer_config.py.swp
+*config*
