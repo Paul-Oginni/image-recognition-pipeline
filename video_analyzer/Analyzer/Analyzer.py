@@ -3,6 +3,7 @@
 import requests
 import analyzer_config as config
 import boto3
+import datetime as dt
 
 class Analyzer():
     
@@ -12,10 +13,11 @@ class Analyzer():
         self.MinConfidence = config.analyzer_config["MinConfidence"]
         self.NotificationChannel = config.analyzer_config["NotificationChannel"]["RoleArn"]
         self.SNSTopicArn = config.analyzer_config["NotificationChannel"]["SNSTopicArn"]
+        self.SNSRoleArn = config.analyzer_config["NotificationChannel"]["RoleArn"]
         self.Bucket = config.analyzer_config["Video"]["S3Object"]["Bucket"]
         self.Name = config.analyzer_config["Video"]["S3Object"]["Name"]
         self.Video = config.analyzer_config["Video"]
-        
+
 
 
     def test_print(self):
@@ -45,19 +47,17 @@ class Analyzer():
         response = client.start_label_detection(
             Video={
                 'S3Object': {
-                    'Bucket': 'image-recognition-analyzer-bucket',
-                    'Name': 'v4.MOV'
-                    #'Version': 'TZGKcPcMELa_jXhb58p6P3YSpfPsPhYV'
+                    'Bucket': self.Bucket,
+                    'Name': self.Name
                 }
             },
-            ClientRequestToken = 'job120180630_2rt',
+            ClientRequestToken = self.ClientRequestToken,
             MinConfidence = 1.0,
             NotificationChannel = {
-                'SNSTopicArn':   'arn:aws:sns:us-west-2:219780720175:VideoAnalyzerTopic',
-                #'RoleArn': 'arn:aws:iam::219780720175:role/rekognition_role'
-                'RoleArn': 'arn:aws:iam::219780720175:role/video_analyzer'
+                'SNSTopicArn': self.SNSTopicArn,
+                'RoleArn': self.SNSRoleArn
             },
-            JobTag='job120180630_3crt'
+            JobTag = self.JobTag
         )
         print(response)       
 
@@ -65,13 +65,11 @@ class Analyzer():
         client = boto3.client('rekognition', region_name='us-west-2')        
         response = client.get_label_detection(
             JobId=jobId,
-            MaxResults=123
-            # NextToken='string',
-            # SortBy='NAME'|'TIMESTAMP'
+            MaxResults=100
         )
         print(response)
 
 
 analyzer = Analyzer()
 #analyzer.make_request()
-analyzer.get_job_results("f4fe90654c6d2d7c047f69e8397ef3f4657171433bf61b34597e78e4b94b3e64")
+analyzer.get_job_results("3ce7cc43a9542241309aad4732b141398f91d307cb44ba46ce52dca542fa80ca")

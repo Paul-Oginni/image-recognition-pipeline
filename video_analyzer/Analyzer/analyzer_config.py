@@ -1,6 +1,6 @@
 
 analyzer_config = {
-    "ClientRequestToken": "job1crt",
+    "ClientRequestToken": "job_20180718_3",
     "JobTag": "job1jt",
     "MinConfidence": 1.0,
     "NotificationChannel": {
@@ -10,8 +10,11 @@ analyzer_config = {
     "Video": {
         "S3Object": {
             "Bucket": "image-recognition-analyzer-bucket",
-            "Name": "v1.MOV",
+            "Name": "v8.MOV",
             "Version": "1"
         }
+    },
+    "AWS": {
+        "Bucket_name":"image-recognition-analyzer-bucket"
     }
 }
