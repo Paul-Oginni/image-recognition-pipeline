@@ -18,10 +18,10 @@ class Archiver():
         try:
             s3 = boto3.resource('s3')
             # posix_file_list = list(self.Path.glob('**/*.txt'))
-            posix_file_list = list(self.Path.glob('**/*.MOV'))            
+            posix_file_list = list(self.Path.glob('**/*.MOV'))
 
             # Upload the files to S3
-            for i in range(len(posix_file_list)):    
+            for i in range(len(posix_file_list)):
                 s3.Object('image-recognition-analyzer-bucket', posix_file_list[i].parts[-1]).put(Body=open(posix_file_list[i], 'rb'))
 
                 # Move files to processed folder
@@ -32,3 +32,4 @@ class Archiver():
 
 a = Archiver()
 a.archive()
+
