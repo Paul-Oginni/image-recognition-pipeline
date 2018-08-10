@@ -4,6 +4,7 @@ import requests
 import analyzer_config as config
 import boto3
 import datetime as dt
+import json
 
 class Analyzer():
     
@@ -67,9 +68,10 @@ class Analyzer():
             JobId=jobId,
             MaxResults=100
         )
-        print(response)
+	
+        print(response["VideoMetadata"]["DurationMillis"])
 
 
 analyzer = Analyzer()
-analyzer.make_request()
-#analyzer.get_job_results("3ce7cc43a9542241309aad4732b141398f91d307cb44ba46ce52dca542fa80ca")
+#analyzer.make_request()
+analyzer.get_job_results("78044e5eeb11eb3a6297f2ced44b9ccad7302caba58ede43e3e3230131b2a7a5")
