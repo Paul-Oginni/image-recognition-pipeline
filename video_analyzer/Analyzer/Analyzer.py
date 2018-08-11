@@ -68,10 +68,24 @@ class Analyzer():
             JobId=jobId,
             MaxResults=100
         )
+        return response
 	
-        print(response["VideoMetadata"]["DurationMillis"])
+        #print(response["VideoMetadata"]["DurationMillis"])
 
+    def query_builder(self, jobId):
+        self.results = self.get_job_results(jobId)
+        self.RequestId = self.results["ResponseMetadata"]["RequestId"] 
+        self.ResultsNumber = len(self.results["Labels"])
+        truncated_response = [self.results['Labels'][i] for i in range(0, (self.ResultsNumber - 1))]
+        label_list = [truncated_response[i]["Label"]["Name"] for i in range(0, (self.ResultsNumber - 1))]
+        #print(label_list)
+        self.query = "INSERT INTO data_pipeline.rekognition_records (RequestId, Labels) VALUES ('{0}', {1})".format(self.RequestId, label_list)
+        print(self.query)
 
+    def execute_query(self, query):
+        pass        
 analyzer = Analyzer()
 #analyzer.make_request()
-analyzer.get_job_results("78044e5eeb11eb3a6297f2ced44b9ccad7302caba58ede43e3e3230131b2a7a5")
+#analyzer.get_job_results("78044e5eeb11eb3a6297f2ced44b9ccad7302caba58ede43e3e3230131b2a7a5")
+analyzer.query_builder("78044e5eeb11eb3a6297f2ced44b9ccad7302caba58ede43e3e3230131b2a7a5")
+
