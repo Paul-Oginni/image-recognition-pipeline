@@ -5,6 +5,8 @@ import analyzer_config as config
 import boto3
 import datetime as dt
 import json
+from cassandra.cluster import Cluster
+import Cassandra_Connect
 
 class Analyzer():
     
@@ -61,31 +63,35 @@ class Analyzer():
             JobTag = self.JobTag
         )
         print(response)       
-
+    
+    # Fetch job results and return response
     def get_job_results(self, jobId):
         client = boto3.client('rekognition', region_name='us-west-2')        
         response = client.get_label_detection(
             JobId=jobId,
             MaxResults=100
         )
+        # return response for use in next method
         return response
 	
-        #print(response["VideoMetadata"]["DurationMillis"])
-
+    # Build query using reults from 'get_job_results'
     def query_builder(self, jobId):
         self.results = self.get_job_results(jobId)
         self.RequestId = self.results["ResponseMetadata"]["RequestId"] 
         self.ResultsNumber = len(self.results["Labels"])
         truncated_response = [self.results['Labels'][i] for i in range(0, (self.ResultsNumber - 1))]
         label_list = [truncated_response[i]["Label"]["Name"] for i in range(0, (self.ResultsNumber - 1))]
-        #print(label_list)
         self.query = "INSERT INTO data_pipeline.rekognition_records (RequestId, Labels) VALUES ('{0}', {1})".format(self.RequestId, label_list)
-        print(self.query)
+        return self.query
 
-    def execute_query(self, query):
-        pass        
+    # Connect to cluster and execute query that was assembled in previous method
+    def execute_query(self, jobId):
+        self.query_builder(jobId)
+        with Cluster([config.analyzer_config["Cluster"]["Cluster_address"]], port=config.analyzer_config["Cluster"]["Cluster_port"]) as cass_cluster:
+            # Connect to nodes on the cluster
+            cass_session = cass_cluster.connect('data_pipeline')
+            cass_session.execute(self.query)        
+
 analyzer = Analyzer()
 #analyzer.make_request()
-#analyzer.get_job_results("78044e5eeb11eb3a6297f2ced44b9ccad7302caba58ede43e3e3230131b2a7a5")
-analyzer.query_builder("78044e5eeb11eb3a6297f2ced44b9ccad7302caba58ede43e3e3230131b2a7a5")
-
+analyzer.execute_query("78044e5eeb11eb3a6297f2ced44b9ccad7302caba58ede43e3e3230131b2a7a5")
