@@ -1,4 +1,5 @@
 #!/usr/bin/env python3.6
+
 import archiver_config as config
 import boto3
 import os
@@ -20,7 +21,7 @@ class Archiver():
             posix_file_list = list(self.path.glob('**/*.MOV'))
 
             # Upload the files to S3
-            for i in range(len(posix_file_list)):
+            for i in posix_file_list:
                 s3.Object('image-recognition-analyzer-bucket', posix_file_list[i].parts[-1]).put(Body=open(posix_file_list[i], 'rb'))
 
                 # Move files to the post-processed folder
